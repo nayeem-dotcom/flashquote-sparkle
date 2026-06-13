@@ -29,7 +29,7 @@ export function Logo({ className = "" }: { className?: string }) {
             strokeLinejoin="round"
             fill="none"
           />
-          <circle cx="30" cy="11" r="2" fill="hsl(var(--brand-accent))" />
+          <circle cx="30" cy="11" r="2" fill="var(--brand-accent)" />
         </svg>
       </span>
       <span className="flex flex-col leading-none">
