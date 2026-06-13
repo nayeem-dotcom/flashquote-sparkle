@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
-import { ArrowLeft, ArrowRight, CheckCircle2, Lock, ShieldCheck, XCircle, Phone } from "lucide-react";
-import { categories, categoryBySlug } from "@/lib/categories";
+import { ArrowLeft, ArrowRight, CheckCircle2, Lock, ShieldCheck, XCircle, Phone, Sparkles } from "lucide-react";
+import { categories, categoryBySlug, isValidZip, PHONE_DISPLAY, PHONE_TEL } from "@/lib/categories";
+import type { Category } from "@/lib/categories";
 
 export const Route = createFileRoute("/quiz/$category")({
   beforeLoad: ({ params }) => {
@@ -27,6 +28,8 @@ function QuizPage() {
   const c = categoryBySlug(category)!;
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
+  const [zip, setZip] = useState("");
+  const [zipError, setZipError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
 
   const total = c.quiz.length;
@@ -38,14 +41,23 @@ function QuizPage() {
     [answers, total],
   );
 
-  const handleAnswer = (qualifies: boolean) => {
-    const newAnswers = { ...answers, [current.id]: qualifies };
+  const advance = (id: string, qualifies: boolean) => {
+    const newAnswers = { ...answers, [id]: qualifies };
     setAnswers(newAnswers);
     if (step < total - 1) {
       setTimeout(() => setStep((s) => s + 1), 220);
     } else {
       setTimeout(() => setDone(true), 220);
     }
+  };
+
+  const submitZip = () => {
+    if (!isValidZip(zip)) {
+      setZipError("Please enter a valid 5-digit U.S. ZIP code.");
+      return;
+    }
+    setZipError(null);
+    advance(current.id, true);
   };
 
   if (done) {
@@ -64,7 +76,7 @@ function QuizPage() {
           {/* Image side */}
           <div className="relative hidden lg:block">
             <div className="sticky top-24">
-              <div className="absolute -inset-3 -z-10 rounded-[32px] bg-gradient-to-br from-brand-accent/30 to-brand/30 blur-2xl" />
+              <div className="absolute -inset-3 -z-10 rounded-[32px] bg-gradient-to-br from-brand-accent/30 to-brand/30 blur-2xl animate-pulse" />
               <div className="relative overflow-hidden rounded-[28px] ring-1 ring-border shadow-2xl shadow-brand/10">
                 <img src={c.image} alt={c.name} width={1280} height={960} className="aspect-[4/5] w-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand/60 via-transparent to-transparent" />
@@ -110,19 +122,49 @@ function QuizPage() {
                   <h2 className="font-serif text-2xl leading-tight sm:text-3xl">
                     {current.text}
                   </h2>
-                  <p className="mt-2 text-sm text-muted-foreground">Tap an answer to continue.</p>
-                  <div className="mt-7 grid gap-3">
-                    {current.options.map((opt) => (
-                      <button
-                        key={opt.label}
-                        onClick={() => handleAnswer(opt.qualifies)}
-                        className="group flex w-full items-center justify-between gap-4 rounded-2xl border border-border bg-background p-4 text-left text-base font-medium transition-all hover:border-brand hover:bg-brand-soft hover:translate-x-1"
+
+                  {current.kind === "zip" ? (
+                    <div className="mt-6">
+                      <p className="text-sm text-muted-foreground">We use your ZIP only to confirm eligibility — never stored.</p>
+                      <form
+                        onSubmit={(e) => { e.preventDefault(); submitZip(); }}
+                        className="mt-5 flex flex-col gap-3 sm:flex-row"
                       >
-                        <span>{opt.label}</span>
-                        <ArrowRight className="size-4 text-muted-foreground transition-all group-hover:text-brand group-hover:translate-x-1" />
-                      </button>
-                    ))}
-                  </div>
+                        <input
+                          inputMode="numeric"
+                          autoFocus
+                          maxLength={5}
+                          value={zip}
+                          onChange={(e) => { setZip(e.target.value.replace(/\D/g, "")); setZipError(null); }}
+                          placeholder="e.g. 96001"
+                          className="flex-1 rounded-2xl border border-border bg-background px-5 py-4 text-lg font-medium tracking-widest outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand/20"
+                        />
+                        <button
+                          type="submit"
+                          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-4 text-base font-medium text-brand-foreground transition-transform hover:scale-[1.02] active:scale-95"
+                        >
+                          Continue <ArrowRight className="size-4" />
+                        </button>
+                      </form>
+                      {zipError && <p className="mt-3 text-sm font-medium text-destructive">{zipError}</p>}
+                    </div>
+                  ) : (
+                    <>
+                      <p className="mt-2 text-sm text-muted-foreground">Tap an answer to continue.</p>
+                      <div className="mt-7 grid gap-3">
+                        {current.options.map((opt) => (
+                          <button
+                            key={opt.label}
+                            onClick={() => advance(current.id, opt.qualifies)}
+                            className="group flex w-full items-center justify-between gap-4 rounded-2xl border border-border bg-background p-4 text-left text-base font-medium transition-all hover:border-brand hover:bg-brand-soft hover:translate-x-1"
+                          >
+                            <span>{opt.label}</span>
+                            <ArrowRight className="size-4 text-muted-foreground transition-all group-hover:text-brand group-hover:translate-x-1" />
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </motion.div>
               </AnimatePresence>
 
@@ -146,10 +188,18 @@ function QuizPage() {
   );
 }
 
-function Result({ category: c, qualified }: { category: typeof categories[number]; qualified: boolean }) {
+function Result({ category: c, qualified }: { category: Category; qualified: boolean }) {
+  const advocateTitle = c.advocateLabel === "SSDI advocate" ? "SSDI Advocate" : "Licensed Agent";
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-24">
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-brand-soft/60 via-background to-background" />
+      {qualified && (
+        <>
+          <div className="pointer-events-none absolute -left-32 top-20 -z-10 size-96 rounded-full bg-brand-accent/30 blur-3xl animate-blob" />
+          <div className="pointer-events-none absolute -right-32 bottom-20 -z-10 size-96 rounded-full bg-brand/30 blur-3xl animate-blob" style={{ animationDelay: "3s" }} />
+        </>
+      )}
       <div className="mx-auto max-w-4xl px-5 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 24, scale: 0.97 }}
@@ -161,7 +211,7 @@ function Result({ category: c, qualified }: { category: typeof categories[number
             <img src={c.image} alt={c.name} width={1280} height={960} className="size-full object-cover" />
             <div className={`absolute inset-0 ${qualified ? "bg-gradient-to-t from-brand/85 via-brand/40" : "bg-gradient-to-t from-foreground/80 via-foreground/30"} to-transparent`} />
             <motion.span
-              initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              initial={{ scale: 0, rotate: -45 }} animate={{ scale: 1, rotate: 0 }} transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
               className={`absolute bottom-6 left-6 grid size-16 place-items-center rounded-full ${qualified ? "bg-brand-accent text-brand" : "bg-card text-foreground"} shadow-xl`}
             >
               {qualified ? <CheckCircle2 className="size-8" /> : <XCircle className="size-8" />}
@@ -171,57 +221,95 @@ function Result({ category: c, qualified }: { category: typeof categories[number
           <div className="p-8 sm:p-12">
             {qualified ? (
               <>
-                <span className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold uppercase tracking-widest text-brand">
-                  Congratulations
-                </span>
+                <motion.span
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+                  className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold uppercase tracking-widest text-brand"
+                >
+                  <Sparkles className="size-3.5" /> Congratulations
+                </motion.span>
                 <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">
-                  You <span className="italic text-brand">qualify</span> for {c.name}.
+                  You may be <span className="italic text-brand">eligible</span> for coverage.
                 </h1>
                 <p className="mt-4 max-w-[60ch] text-lg text-muted-foreground">
-                  Based on your answers, you're a strong match for {c.short.toLowerCase()} coverage. The next step is a free, no-obligation chat with a licensed advisor — they'll walk you through real plans available in your area.
+                  Based on your responses, you meet the initial screening criteria for our <strong className="text-foreground">{c.programName}</strong>. You're one step away from securing your savings and benefits.
                 </p>
-                <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                  <a
-                    href="tel:+18005557868"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-6 py-4 text-base font-medium text-brand-foreground transition-transform hover:scale-[1.02]"
-                  >
-                    <Phone className="size-4" /> Call a licensed advisor
-                  </a>
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background px-6 py-4 text-base font-medium hover:bg-brand-soft"
-                  >
-                    Or schedule a callback
-                  </Link>
+
+                <div className="mt-7 grid gap-3 rounded-2xl bg-surface p-5 sm:grid-cols-3">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Average Call</div>
+                    <div className="mt-1 font-serif text-xl text-brand">Under 3 min</div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Cost</div>
+                    <div className="mt-1 font-serif text-xl text-brand">100% Free</div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Obligation</div>
+                    <div className="mt-1 font-serif text-xl text-brand">None</div>
+                  </div>
                 </div>
-                <div className="mt-8 grid gap-4 rounded-2xl bg-surface p-5 sm:grid-cols-3">
-                  {c.benefits.map((b) => (
-                    <div key={b.title}>
-                      <div className="font-serif text-base text-brand">{b.title}</div>
-                      <p className="mt-1 text-xs text-muted-foreground">{b.desc}</p>
-                    </div>
-                  ))}
+
+                <div className="mt-8">
+                  <motion.a
+                    href={`tel:${PHONE_TEL}`}
+                    initial={{ scale: 0.95 }}
+                    animate={{ scale: [1, 1.03, 1] }}
+                    transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                    className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-brand to-brand-accent px-8 py-6 text-lg font-semibold text-brand-foreground shadow-2xl shadow-brand/30 ring-1 ring-brand/20 transition-transform hover:scale-[1.02]"
+                  >
+                    <Phone className="size-5" />
+                    Talk With a {advocateTitle} Now
+                    <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                  </motion.a>
+                  <p className="mt-3 text-center text-sm font-medium text-brand">{PHONE_DISPLAY}</p>
+                  <p className="mt-4 text-center text-xs leading-relaxed text-muted-foreground">
+                    By tapping the button above, you consent to be connected with a {c.advocateLabel}.
+                  </p>
                 </div>
               </>
             ) : (
               <>
                 <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-widest text-foreground/70">
-                  We're sorry
+                  Thank you for your time
                 </span>
                 <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">
-                  This plan isn't the <span className="italic text-brand">right fit</span> right now.
+                  We're sorry — you don't <span className="italic text-brand">qualify</span> right now.
                 </h1>
                 <p className="mt-4 max-w-[60ch] text-lg text-muted-foreground">
-                  Based on your answers, {c.name.toLowerCase()} likely won't be the best match today — but you may qualify for one of our other coverage types. Take a look below.
+                  Thank you for completing our questionnaire. Based on your responses, you don't meet the specific eligibility requirements for our <strong className="text-foreground">{c.programName}</strong> today.
                 </p>
-                <div className="mt-8">
+
+                <div className="mt-7 rounded-2xl bg-surface p-5">
+                  <div className="font-serif text-xl">Why did this happen?</div>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Our automated system screens for specific carrier criteria — strict age brackets, income limits, or current coverage status. Missing even one means we can't route you through this specific channel.
+                  </p>
+                </div>
+
+                <div className="mt-7">
+                  <div className="font-serif text-xl">What can you do next?</div>
+                  <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                    <li>• <strong className="text-foreground">Review your answers.</strong> If you misclicked, restart the quiz.</li>
+                    <li>• <strong className="text-foreground">Try a different coverage type.</strong> You may qualify for another program below.</li>
+                    <li>• <strong className="text-foreground">Check government resources.</strong> Some assistance programs have more flexible guidelines.</li>
+                  </ul>
+                </div>
+
+                <div className="mt-8 flex flex-wrap gap-3">
                   <Link
-                    to="/quote"
+                    to="/"
                     className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-4 text-base font-medium text-brand-foreground transition-transform hover:scale-[1.02]"
                   >
-                    Explore other coverage <ArrowRight className="size-4" />
+                    <ArrowLeft className="size-4" /> Return to homepage
+                  </Link>
+                  <Link
+                    to="/quote"
+                    className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-4 text-base font-medium hover:bg-brand-soft"
+                  >
+                    Try another coverage <ArrowRight className="size-4" />
                   </Link>
                 </div>
+
                 <div className="mt-10 grid gap-3 sm:grid-cols-2">
                   {categories.filter((x) => x.slug !== c.slug).slice(0, 4).map((o) => (
                     <Link
