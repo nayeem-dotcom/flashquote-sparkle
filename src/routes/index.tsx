@@ -168,7 +168,7 @@ function Home() {
           </Reveal>
           <div className="grid gap-6 md:grid-cols-3">
             {[
-              { n: "01", t: "Tell us about you", d: "Share a ZIP code and a few quick details — no SSN, no commitment.", I: Users },
+              { n: "01", t: "Take a quick quiz", d: "Pick your coverage and answer a few yes/no questions — fully anonymous.", I: Users },
               { n: "02", t: "Compare side-by-side", d: "We pull live quotes from top-rated carriers and show your best fits.", I: Clock },
               { n: "03", t: "Enroll with a human", d: "A licensed advisor walks you through enrollment — only if you'd like.", I: Shield },
             ].map((s, i) => (
