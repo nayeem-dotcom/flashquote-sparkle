@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { categories } from "@/lib/categories";
 
-const SLOTS = ["medicare", "aca", "auto", "home", "ssdi", "final-expense"] as const;
+const SLOTS = ["medicare", "health", "auto", "home", "ssdi", "final-expense"] as const;
 
 export function CategoryGrid() {
   const bySlug = Object.fromEntries(categories.map((c) => [c.slug, c]));
