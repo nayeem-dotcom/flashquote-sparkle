@@ -46,7 +46,7 @@ function Contact() {
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { I: Phone, t: "Call us", v: "1-800-555-QUOTE", s: "Mon–Fri · 8am–8pm ET", href: "tel:+18005557868" },
+              { I: Phone, t: "Call us", v: "(866) 498-7441", s: "Mon–Fri · 8am–8pm ET", href: "tel:+18664987441" },
               { I: Mail, t: "Email", v: "hello@trendyquote.com", s: "We reply within 1 hour", href: "mailto:hello@trendyquote.com" },
               { I: MapPin, t: "Headquarters", v: "Charleston, SC", s: "Licensed in all 50 states" },
               { I: Clock, t: "Hours", v: "Mon – Fri", s: "8am–8pm Eastern Time" },

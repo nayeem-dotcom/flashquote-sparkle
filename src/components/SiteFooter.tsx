@@ -46,7 +46,7 @@ export function SiteFooter() {
           <div>
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Get in touch</div>
             <ul className="mt-4 space-y-2.5 text-sm text-foreground/80">
-              <li><a href="tel:+18005557868" className="hover:text-brand">1-800-555-QUOTE</a></li>
+              <li><a href="tel:+18664987441" className="hover:text-brand">(866) 498-7441</a></li>
               <li><a href="mailto:hello@trendyquote.com" className="hover:text-brand">hello@trendyquote.com</a></li>
               <li>Mon–Fri · 8am–8pm ET</li>
             </ul>

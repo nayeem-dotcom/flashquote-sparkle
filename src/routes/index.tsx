@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "TrendyQuote — Insurance that feels effortless" },
-      { name: "description", content: "Compare Medicare, Health, Auto, Life, Home and Final Expense insurance from top providers. Get a personalized quote in minutes." },
+      { name: "description", content: "Check your eligibility for Medicare, ACA Health, Auto, Home, SSDI and Final Expense — anonymously, in under 60 seconds." },
       { property: "og:title", content: "TrendyQuote — Insurance that feels effortless" },
       { property: "og:description", content: "Compare insurance plans across six categories. Get a personalized quote in minutes." },
       { property: "og:url", content: "/" },
@@ -62,7 +62,7 @@ function Home() {
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
               className="mt-7 max-w-[58ch] text-lg leading-relaxed text-muted-foreground"
             >
-              Compare affordable Medicare, Health, Auto, Life, Home and Final Expense plans from the carriers families trust — without the sales pressure.
+              Check your eligibility for Medicare, ACA Health, Auto, Home, SSDI and Final Expense in under 60 seconds — fully anonymous, no name, email or phone required.
             </motion.p>
 
             <motion.div
@@ -216,15 +216,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Trust */}
-      <section className="border-t border-border py-14">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-12 gap-y-4 px-5 text-xs font-bold uppercase tracking-widest text-muted-foreground/60 sm:px-6">
-          <span>BBB Accredited A+</span><span>·</span>
-          <span>HIPAA Compliant</span><span>·</span>
-          <span>256-bit SSL</span><span>·</span>
-          <span>Independently Licensed</span>
-        </div>
-      </section>
     </>
   );
 }
