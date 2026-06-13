@@ -12,11 +12,6 @@ export function SiteFooter() {
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Clarity and confidence in insurance comparison. Independently licensed in all 50 states. We never ask for personal information through our website.
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">
-              <span className="rounded-full border border-border px-3 py-1">BBB A+</span>
-              <span className="rounded-full border border-border px-3 py-1">256-bit SSL</span>
-              <span className="rounded-full border border-border px-3 py-1">HIPAA</span>
-            </div>
           </div>
 
           <div>
