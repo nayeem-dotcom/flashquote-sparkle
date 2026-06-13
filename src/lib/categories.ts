@@ -1,14 +1,16 @@
-import { Heart, Stethoscope, Car, Shield, Home, Flower2 } from "lucide-react";
+import { Heart, Stethoscope, Car, Accessibility, Home, Flower2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import medicareImg from "@/assets/cat-medicare.jpg";
 import healthImg from "@/assets/cat-health.jpg";
 import autoImg from "@/assets/cat-auto.jpg";
-import lifeImg from "@/assets/cat-life.jpg";
+import ssdiImg from "@/assets/cat-ssdi.jpg";
 import homeImg from "@/assets/cat-home.jpg";
 import finalExpenseImg from "@/assets/cat-final-expense.jpg";
 
 export type QuizOption = { label: string; qualifies: boolean };
-export type QuizQuestion = { id: string; text: string; options: QuizOption[] };
+export type QuizQuestion =
+  | { id: string; kind: "choice"; text: string; options: QuizOption[] }
+  | { id: string; kind: "zip"; text: string };
 
 export type Category = {
   slug: string;
@@ -19,6 +21,8 @@ export type Category = {
   cta: string;
   image: string;
   Icon: LucideIcon;
+  programName: string;
+  advocateLabel: string; // e.g. "licensed agent" or "SSDI advocate"
   benefits: { title: string; desc: string }[];
   faq: { q: string; a: string }[];
   quiz: QuizQuestion[];
@@ -38,10 +42,12 @@ export const categories: Category[] = [
     cta: "Check Medicare Eligibility",
     image: medicareImg,
     Icon: Heart,
+    programName: "Medicare Advantage / Supplement program",
+    advocateLabel: "licensed agent",
     benefits: [
       { title: "Advantage & Supplement", desc: "Side-by-side comparison of MA, Medigap and Part D plans." },
       { title: "$0-premium options", desc: "Many beneficiaries qualify for $0/mo Advantage plans." },
-      { title: "Licensed senior advisors", desc: "Speak to a real human, never a robocaller." },
+      { title: "Real human advisors", desc: "Speak to a real person, never a robocaller." },
     ],
     faq: [
       { q: "When can I enroll?", a: "Initial Enrollment is the seven months around your 65th birthday. Annual Election runs Oct 15 – Dec 7." },
@@ -49,40 +55,43 @@ export const categories: Category[] = [
     ],
     quiz: [
       {
-        id: "age",
-        text: "Are you age 64 or older (or eligible due to disability)?",
+        id: "onMedicare",
+        kind: "choice",
+        text: "Are you on Medicare?",
         options: [yes(true), no(false)],
       },
       {
-        id: "residency",
-        text: "Are you a U.S. citizen or legal resident for 5+ years?",
+        id: "over65",
+        kind: "choice",
+        text: "Are you over 65 years old?",
         options: [yes(true), no(false)],
       },
       {
-        id: "partAB",
-        text: "Are you enrolled in (or eligible for) Medicare Parts A & B?",
-        options: [yes(true), { label: "Not sure", qualifies: true }, no(true)],
-      },
-      {
-        id: "intent",
-        text: "Are you looking to enroll or switch plans in the next 90 days?",
-        options: [yes(true), { label: "Just exploring", qualifies: true }, no(false)],
+        id: "checked",
+        kind: "choice",
+        text: "Have you checked your Medicare benefits this year?",
+        options: [
+          { label: "No", qualifies: true },
+          { label: "Yes", qualifies: true },
+        ],
       },
     ],
   },
   {
     slug: "health",
     name: "Health Insurance",
-    short: "Health",
+    short: "ACA Health",
     tagline: "Coverage that grows with you.",
     blurb:
-      "Individual and family plans that protect both your physical and financial wellbeing — from preventative checkups to major medical events.",
-    cta: "Check Health Eligibility",
+      "Individual and family ACA Marketplace plans that protect both your physical and financial wellbeing — from preventative checkups to major medical events.",
+    cta: "Check ACA Eligibility",
     image: healthImg,
     Icon: Stethoscope,
+    programName: "Affordable Care Act (Obamacare) Subsidy program",
+    advocateLabel: "licensed agent",
     benefits: [
       { title: "ACA-qualified plans", desc: "Bronze, Silver, Gold and Platinum tiers with subsidy estimates." },
-      { title: "Short-term coverage", desc: "Bridge gaps between employers, students or new graduates." },
+      { title: "Premium tax credits", desc: "Most households earning under $50k qualify for major savings." },
       { title: "HSA-compatible", desc: "Pair high-deductible plans with tax-advantaged savings." },
     ],
     faq: [
@@ -90,34 +99,25 @@ export const categories: Category[] = [
       { q: "Are my doctors covered?", a: "We check provider networks during the quote process — just pick your preferred clinic." },
     ],
     quiz: [
+      { id: "zip", kind: "zip", text: "Enter your ZIP code" },
       {
         id: "age",
-        text: "Are you between 18 and 64 years old?",
-        options: [yes(true), no(false)],
-      },
-      {
-        id: "residency",
-        text: "Are you a U.S. resident?",
-        options: [yes(true), no(false)],
-      },
-      {
-        id: "employer",
-        text: "Do you currently have employer-provided health insurance?",
-        options: [yes(true), no(true)],
-      },
-      {
-        id: "household",
-        text: "Who are you looking to cover?",
+        kind: "choice",
+        text: "What is your age?",
         options: [
-          { label: "Just me", qualifies: true },
-          { label: "Me + partner", qualifies: true },
-          { label: "Family with children", qualifies: true },
+          { label: "Under 65", qualifies: true },
+          { label: "65 or older", qualifies: false },
         ],
       },
       {
-        id: "intent",
-        text: "Looking to compare plans in the next 60 days?",
-        options: [yes(true), { label: "Just researching", qualifies: true }, no(false)],
+        id: "income",
+        kind: "choice",
+        text: "What is your annual household income?",
+        options: [
+          { label: "No income", qualifies: false },
+          { label: "Under $50,000", qualifies: true },
+          { label: "Over $50,000", qualifies: false },
+        ],
       },
     ],
   },
@@ -131,6 +131,8 @@ export const categories: Category[] = [
     cta: "Check Auto Eligibility",
     image: autoImg,
     Icon: Car,
+    programName: "Auto Insurance Rate Reduction program",
+    advocateLabel: "licensed agent",
     benefits: [
       { title: "Multi-car & multi-policy", desc: "Bundle home + auto for an average 12% savings." },
       { title: "Accident forgiveness", desc: "Stay protected with carriers that don't punish a first claim." },
@@ -142,23 +144,26 @@ export const categories: Category[] = [
     ],
     quiz: [
       {
-        id: "owns",
-        text: "Do you own or lease a vehicle?",
+        id: "current",
+        kind: "choice",
+        text: "Do you currently have auto insurance?",
         options: [yes(true), no(false)],
       },
       {
-        id: "license",
-        text: "Do you have a valid U.S. driver's license?",
-        options: [yes(true), no(false)],
-      },
-      {
-        id: "dui",
-        text: "Any DUI or major violation in the last 3 years?",
-        options: [no(true), yes(false)],
+        id: "compared",
+        kind: "choice",
+        text: "When was the last time you compared rates?",
+        options: [
+          { label: "Within the last 6 months", qualifies: true },
+          { label: "6–12 months ago", qualifies: true },
+          { label: "More than 1 year ago", qualifies: true },
+          { label: "I can't remember", qualifies: true },
+        ],
       },
       {
         id: "vehicles",
-        text: "How many vehicles in your household?",
+        kind: "choice",
+        text: "How many vehicles are on your policy?",
         options: [
           { label: "1", qualifies: true },
           { label: "2", qualifies: true },
@@ -166,60 +171,67 @@ export const categories: Category[] = [
         ],
       },
       {
-        id: "intent",
-        text: "Looking to switch or compare auto policies soon?",
-        options: [yes(true), { label: "Just exploring", qualifies: true }, no(false)],
+        id: "lower",
+        kind: "choice",
+        text: "Would you like to see if you can lower your monthly premium?",
+        options: [yes(true), no(false)],
       },
     ],
   },
   {
-    slug: "life",
-    name: "Life Insurance",
-    short: "Life",
-    tagline: "Protect what matters most.",
+    slug: "ssdi",
+    name: "SSDI Benefits",
+    short: "SSDI",
+    tagline: "Disability benefits, guided.",
     blurb:
-      "Term, whole and universal life policies that put your family first. Get a personalized recommendation in minutes without a medical exam in most cases.",
-    cta: "Check Life Eligibility",
-    image: lifeImg,
-    Icon: Shield,
+      "Social Security Disability Insurance can replace a portion of lost income when a medical condition prevents you from working. Our advocate network helps you understand if you may qualify — before you file.",
+    cta: "Check SSDI Eligibility",
+    image: ssdiImg,
+    Icon: Accessibility,
+    programName: "SSDI Disability Benefits Evaluation",
+    advocateLabel: "SSDI advocate",
     benefits: [
-      { title: "No-exam options", desc: "Up to $1M in coverage without bloodwork for qualifying applicants." },
-      { title: "Term & permanent", desc: "10, 20, 30-year term plus whole-life cash-value policies." },
-      { title: "Locked-in rates", desc: "Lock today's rate — younger and healthier is always cheaper." },
+      { title: "No-cost evaluation", desc: "Independent SSDI advocates review your case at no upfront cost." },
+      { title: "Faster, cleaner filings", desc: "Most self-filed SSDI claims are denied — advocate-led filings convert at far higher rates." },
+      { title: "Back-pay potential", desc: "Approved applicants often receive back-pay covering the months they waited." },
     ],
     faq: [
-      { q: "How much do I need?", a: "A common rule is 10-15× your annual income. We'll model it based on your goals." },
-      { q: "How fast is approval?", a: "Many applicants are approved in 24-72 hours with simplified underwriting." },
+      { q: "Who qualifies for SSDI?", a: "Adults under retirement age who have worked recently and whose medical condition prevents substantial work for 12+ months." },
+      { q: "Is this a government program?", a: "SSDI is a federal program. We connect you with private advocates and attorneys who help with the application." },
     ],
     quiz: [
+      { id: "zip", kind: "zip", text: "Enter your ZIP code" },
       {
         id: "age",
-        text: "Are you between 18 and 75 years old?",
-        options: [yes(true), no(false)],
-      },
-      {
-        id: "residency",
-        text: "Are you a U.S. citizen or legal resident?",
-        options: [yes(true), no(false)],
-      },
-      {
-        id: "health",
-        text: "Have you been diagnosed with a terminal illness in the last 12 months?",
-        options: [no(true), yes(false)],
-      },
-      {
-        id: "tobacco",
-        text: "Have you used tobacco products in the last 12 months?",
-        options: [no(true), yes(true)],
-      },
-      {
-        id: "coverage",
-        text: "How much coverage are you considering?",
+        kind: "choice",
+        text: "What is your age?",
         options: [
-          { label: "Under $100k", qualifies: true },
-          { label: "$100k – $500k", qualifies: true },
-          { label: "$500k+", qualifies: true },
+          { label: "Under 18", qualifies: false },
+          { label: "18 – 49", qualifies: true },
+          { label: "50 – 64", qualifies: true },
+          { label: "65 or older", qualifies: false },
         ],
+      },
+      {
+        id: "working",
+        kind: "choice",
+        text: "Has a medical condition kept you from working for 12+ months (or is it expected to)?",
+        options: [yes(true), no(false)],
+      },
+      {
+        id: "currently",
+        kind: "choice",
+        text: "Are you currently receiving SSDI benefits?",
+        options: [
+          { label: "No", qualifies: true },
+          { label: "Yes", qualifies: false },
+        ],
+      },
+      {
+        id: "advocate",
+        kind: "choice",
+        text: "Would you like to speak with an SSDI advocate about your case?",
+        options: [yes(true), no(false)],
       },
     ],
   },
@@ -233,6 +245,8 @@ export const categories: Category[] = [
     cta: "Check Home Eligibility",
     image: homeImg,
     Icon: Home,
+    programName: "Homeowners Insurance Savings program",
+    advocateLabel: "licensed agent",
     benefits: [
       { title: "Replacement cost", desc: "Rebuild at today's prices, not depreciated value." },
       { title: "Liability protection", desc: "Up to $1M in personal liability for slips, bites and accidents." },
@@ -244,33 +258,26 @@ export const categories: Category[] = [
     ],
     quiz: [
       {
-        id: "owns",
-        text: "Do you own your home (or are you closing soon)?",
+        id: "current",
+        kind: "choice",
+        text: "Do you currently have homeowners insurance?",
         options: [yes(true), no(false)],
       },
       {
-        id: "primary",
-        text: "Is this your primary residence?",
-        options: [yes(true), { label: "Secondary / vacation", qualifies: true }, no(true)],
-      },
-      {
-        id: "claims",
-        text: "Any open or unresolved claims on the property?",
-        options: [no(true), yes(false)],
-      },
-      {
-        id: "type",
-        text: "What type of home?",
+        id: "increased",
+        kind: "choice",
+        text: "Has your premium increased in the past 12 months?",
         options: [
-          { label: "Single-family", qualifies: true },
-          { label: "Condo / townhouse", qualifies: true },
-          { label: "Mobile / manufactured", qualifies: true },
+          { label: "Yes", qualifies: true },
+          { label: "No", qualifies: true },
+          { label: "Not sure", qualifies: true },
         ],
       },
       {
-        id: "intent",
-        text: "Looking to start or switch a policy in the next 60 days?",
-        options: [yes(true), { label: "Just comparing", qualifies: true }, no(false)],
+        id: "switch",
+        kind: "choice",
+        text: "Would you switch providers if you could save money?",
+        options: [yes(true), no(false)],
       },
     ],
   },
@@ -284,6 +291,8 @@ export const categories: Category[] = [
     cta: "Check Final Expense Eligibility",
     image: finalExpenseImg,
     Icon: Flower2,
+    programName: "Affordable Final Expense & Burial program",
+    advocateLabel: "licensed agent",
     benefits: [
       { title: "Guaranteed acceptance", desc: "Many policies approve ages 50-85 with no health questions." },
       { title: "Locked premiums", desc: "Your monthly rate never increases, for life." },
@@ -296,36 +305,40 @@ export const categories: Category[] = [
     quiz: [
       {
         id: "age",
-        text: "Are you between 50 and 85 years old?",
-        options: [yes(true), no(false)],
-      },
-      {
-        id: "residency",
-        text: "Are you a U.S. citizen or legal resident?",
-        options: [yes(true), no(false)],
-      },
-      {
-        id: "terminal",
-        text: "Have you been diagnosed with a terminal illness in the last 12 months?",
-        options: [no(true), yes(false)],
-      },
-      {
-        id: "coverage",
-        text: "How much coverage are you considering?",
+        kind: "choice",
+        text: "What is your age?",
         options: [
-          { label: "$5k – $10k", qualifies: true },
-          { label: "$10k – $25k", qualifies: true },
-          { label: "$25k+", qualifies: true },
+          { label: "50 – 59", qualifies: true },
+          { label: "60 – 69", qualifies: true },
+          { label: "70 – 79", qualifies: true },
+          { label: "80 – 85", qualifies: true },
         ],
       },
       {
-        id: "purpose",
-        text: "What's most important to you?",
+        id: "existing",
+        kind: "choice",
+        text: "Do you currently have any life insurance or final expense coverage?",
         options: [
-          { label: "Funeral costs", qualifies: true },
-          { label: "Leaving a legacy", qualifies: true },
-          { label: "Final medical bills", qualifies: true },
+          { label: "Yes", qualifies: true },
+          { label: "No", qualifies: true },
         ],
+      },
+      {
+        id: "income",
+        kind: "choice",
+        text: "What is your approximate monthly income?",
+        options: [
+          { label: "Under $1,500", qualifies: false },
+          { label: "$1,500 – $2,500", qualifies: true },
+          { label: "$2,500 – $4,000", qualifies: true },
+          { label: "$4,000+", qualifies: true },
+        ],
+      },
+      {
+        id: "see",
+        kind: "choice",
+        text: "Would you like to see affordable coverage options for final expenses?",
+        options: [yes(true), no(false)],
       },
     ],
   },
@@ -333,3 +346,9 @@ export const categories: Category[] = [
 
 export const categoryBySlug = (slug: string) =>
   categories.find((c) => c.slug === slug);
+
+export const PHONE_DISPLAY = "(866) 498-7441";
+export const PHONE_TEL = "+18664987441";
+
+export const isValidZip = (zip: string) =>
+  /^\d{5}$/.test(zip.trim()) && zip.trim() !== "00000";
