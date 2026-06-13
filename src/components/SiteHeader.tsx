@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { categories } from "@/lib/categories";
+import { Logo } from "@/components/Logo";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -17,12 +18,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-5 sm:px-6">
-        <Link to="/" className="flex items-center gap-2 shrink-0">
-          <span className="grid size-9 place-items-center rounded-full bg-brand text-brand-foreground">
-            <Sparkles className="size-4" />
-          </span>
-          <span className="font-serif text-xl tracking-tight">TrendyQuote</span>
-        </Link>
+        <Logo />
 
         <nav className="hidden items-center gap-7 md:flex">
           <div
@@ -31,7 +27,7 @@ export function SiteHeader() {
             onMouseLeave={() => setSolOpen(false)}
           >
             <button className="text-sm font-medium text-foreground/70 hover:text-brand">
-              Solutions
+              Coverage
             </button>
             <AnimatePresence>
               {solOpen && (
@@ -42,7 +38,7 @@ export function SiteHeader() {
                   transition={{ duration: 0.15 }}
                   className="absolute left-1/2 top-full -translate-x-1/2 pt-3"
                 >
-                  <div className="grid w-[420px] grid-cols-2 gap-1 rounded-2xl border border-border bg-card p-2 shadow-xl">
+                  <div className="grid w-[460px] grid-cols-2 gap-1 rounded-2xl border border-border bg-card p-2 shadow-xl">
                     {categories.map((c) => (
                       <Link
                         key={c.slug}
@@ -82,7 +78,7 @@ export function SiteHeader() {
             to="/quote"
             className="hidden rounded-full bg-brand px-5 py-2 text-sm font-medium text-brand-foreground ring-1 ring-brand transition-transform hover:scale-[1.03] active:scale-95 sm:inline-flex"
           >
-            Get a Quote
+            Start Quiz
           </Link>
           <button
             className="grid size-10 place-items-center rounded-full border border-border md:hidden"
@@ -114,7 +110,7 @@ export function SiteHeader() {
                   {l.label}
                 </Link>
               ))}
-              <div className="pt-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Solutions</div>
+              <div className="pt-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Coverage</div>
               {categories.map((c) => (
                 <Link
                   key={c.slug}
@@ -132,7 +128,7 @@ export function SiteHeader() {
                 onClick={() => setOpen(false)}
                 className="mt-3 block rounded-full bg-brand px-5 py-3 text-center text-sm font-medium text-brand-foreground"
               >
-                Get a Quote
+                Start Quiz
               </Link>
             </div>
           </motion.div>

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 import { categories, categoryBySlug } from "@/lib/categories";
 import { Reveal } from "@/components/Reveal";
 
@@ -19,6 +19,7 @@ export const Route = createFileRoute("/$category")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
         { property: "og:url", content: `/${params.category}` },
+        { property: "og:image", content: c?.image ?? "" },
         { property: "og:type", content: "article" },
       ],
       links: [{ rel: "canonical", href: `/${params.category}` }],
@@ -34,14 +35,14 @@ function CategoryPage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24">
+      {/* Hero with image */}
+      <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20">
         <div className="animate-gradient-slow absolute inset-0 -z-10 bg-gradient-to-br from-brand-soft via-background to-background" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <Link to="/" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-brand">
             ← All coverage
           </Link>
-          <div className="mt-6 grid items-end gap-10 lg:grid-cols-[1.4fr_1fr]">
+          <div className="mt-6 grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
             <div>
               <motion.div
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
@@ -69,14 +70,41 @@ function CategoryPage() {
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
                 className="mt-8 flex flex-wrap gap-3"
               >
-                <Link to="/quote" search={{ type: c.slug }} className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3.5 text-sm font-medium text-brand-foreground hover:scale-[1.02] transition-transform">
+                <Link
+                  to="/quiz/$category"
+                  params={{ category: c.slug }}
+                  className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3.5 text-sm font-medium text-brand-foreground hover:scale-[1.02] transition-transform"
+                >
                   {c.cta} <ArrowRight className="size-4" />
                 </Link>
                 <Link to="/contact" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-medium hover:bg-brand-soft">
                   Talk to an advisor
                 </Link>
               </motion.div>
+              <p className="mt-5 inline-flex items-center gap-2 text-xs text-muted-foreground">
+                <ShieldCheck className="size-3.5 text-brand" /> Under 60 seconds · No personal info required
+              </p>
             </div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.15 }}
+              className="relative"
+            >
+              <div className="absolute -inset-4 -z-10 rounded-[36px] bg-gradient-to-br from-brand-accent/30 to-brand/30 blur-2xl" />
+              <div className="relative overflow-hidden rounded-[32px] ring-1 ring-border shadow-2xl shadow-brand/10">
+                <img
+                  src={c.image}
+                  alt={c.name}
+                  width={1280}
+                  height={960}
+                  className="aspect-[4/5] w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand/60 via-transparent to-transparent" />
+                <div className="absolute bottom-0 p-6 text-brand-foreground">
+                  <div className="font-serif text-3xl leading-tight">{c.tagline}</div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -104,29 +132,25 @@ function CategoryPage() {
         </div>
       </section>
 
-      {/* Process strip */}
+      {/* Quiz CTA strip */}
       <section className="bg-surface py-20">
         <div className="mx-auto max-w-5xl px-5 sm:px-6">
           <Reveal>
-            <h2 className="font-serif text-4xl">From "curious" to "covered" in 3 steps.</h2>
+            <div className="relative overflow-hidden rounded-[32px] bg-brand p-10 text-brand-foreground sm:p-14">
+              <div aria-hidden className="absolute -right-20 -top-20 size-72 rounded-full bg-brand-accent/30 blur-3xl animate-blob" />
+              <h2 className="relative font-serif text-4xl leading-tight">See if you qualify for {c.short}.</h2>
+              <p className="relative mt-3 max-w-[55ch] text-brand-foreground/80">
+                {c.quiz.length} quick questions. Fully anonymous — no name, email or phone required.
+              </p>
+              <Link
+                to="/quiz/$category"
+                params={{ category: c.slug }}
+                className="relative mt-7 inline-flex items-center gap-2 rounded-full bg-brand-foreground px-6 py-4 text-base font-semibold text-brand transition-transform hover:scale-[1.02]"
+              >
+                Start the quiz <ArrowRight className="size-4" />
+              </Link>
+            </div>
           </Reveal>
-          <ol className="mt-10 space-y-4">
-            {[
-              { t: "Share a few details", d: "ZIP code, basic info, and what you'd like to protect." },
-              { t: "See real quotes side-by-side", d: "We surface the most relevant carriers for your situation." },
-              { t: "Enroll with help if you want it", d: "Talk to a licensed advisor — or self-enroll online, your call." },
-            ].map((s, i) => (
-              <Reveal key={s.t} delay={i * 0.08}>
-                <li className="flex gap-5 rounded-3xl bg-card p-6 ring-1 ring-border">
-                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-brand text-brand-foreground font-serif text-lg">{i + 1}</span>
-                  <div className="min-w-0">
-                    <div className="font-serif text-xl">{s.t}</div>
-                    <p className="text-muted-foreground">{s.d}</p>
-                  </div>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
         </div>
       </section>
 
@@ -163,12 +187,15 @@ function CategoryPage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {others.map((o, i) => (
               <Reveal key={o.slug} delay={i * 0.06}>
-                <Link to="/$category" params={{ category: o.slug }} className="group block rounded-3xl bg-card p-6 ring-1 ring-border hover:-translate-y-1 transition-all">
-                  <span className="grid size-10 place-items-center rounded-xl bg-brand-soft text-brand group-hover:bg-brand group-hover:text-brand-foreground transition-colors">
-                    <o.Icon className="size-5" />
-                  </span>
-                  <h3 className="mt-4 font-serif text-xl">{o.name}</h3>
-                  <p className="text-sm text-muted-foreground">{o.tagline}</p>
+                <Link to="/$category" params={{ category: o.slug }} className="group block overflow-hidden rounded-3xl ring-1 ring-border hover:-translate-y-1 transition-all">
+                  <div className="relative h-40 overflow-hidden">
+                    <img src={o.image} alt={o.name} width={1280} height={960} loading="lazy" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
+                    <div className="absolute bottom-3 left-4 font-serif text-2xl text-white">{o.short}</div>
+                  </div>
+                  <div className="bg-card p-5">
+                    <p className="text-sm text-muted-foreground">{o.tagline}</p>
+                  </div>
                 </Link>
               </Reveal>
             ))}
