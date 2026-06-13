@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, Clock, Users, Star } from "lucide-react";
+import { ArrowRight, Shield, Clock, Users, Star, ArrowUpRight } from "lucide-react";
 import heroFamily from "@/assets/hero-family.jpg";
+import imgMedicare from "@/assets/cat-medicare.jpg";
+import imgHealth from "@/assets/cat-health.jpg";
+import imgHome from "@/assets/cat-home.jpg";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { Reveal } from "@/components/Reveal";
 
@@ -26,109 +29,198 @@ const stats = [
   { value: "98%", label: "Renewal rate" },
 ];
 
+const TICKER = ["Medicare", "ACA Health", "Auto", "Home", "SSDI", "Final Expense"];
+
 function Home() {
   return (
     <>
-      {/* Hero — editorial asymmetry */}
-      <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28">
-        <div className="animate-gradient-slow absolute inset-0 -z-10 bg-gradient-to-br from-brand-soft via-background to-brand-soft/40" />
-        <div className="absolute inset-x-0 top-0 -z-10 h-[700px] [mask-image:radial-gradient(70%_60%_at_50%_0%,#000_40%,transparent_100%)]">
-          <div className="absolute left-1/4 top-20 size-72 rounded-full bg-brand-accent/25 blur-3xl animate-blob" />
-          <div className="absolute right-1/4 top-32 size-72 rounded-full bg-brand/20 blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
+      {/* Hero — advanced editorial layered composition */}
+      <section className="relative overflow-hidden pb-16 pt-10 sm:pb-24 sm:pt-14">
+        {/* ambient background */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-soft/60 via-background to-background" />
+        <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[640px] [mask-image:radial-gradient(70%_55%_at_60%_20%,#000_40%,transparent_100%)]">
+          <div className="absolute -left-10 top-40 size-[420px] rounded-full bg-brand-accent/20 blur-[120px] animate-blob" />
+          <div className="absolute right-0 top-10 size-[420px] rounded-full bg-brand/15 blur-[120px] animate-blob" style={{ animationDelay: "5s" }} />
         </div>
 
-        <div className="mx-auto grid max-w-7xl grid-cols-12 items-center gap-8 px-5 sm:px-6">
-          <div className="col-span-12 lg:col-span-7">
-            <motion.span
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 rounded-full border border-brand/10 bg-brand/5 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-brand"
-            >
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-accent opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-brand-accent" />
-              </span>
-              Trusted by 2M+ families
-            </motion.span>
+        {/* faint editorial grid lines */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 mx-auto grid max-w-7xl grid-cols-12 px-5 sm:px-6">
+          {Array.from({ length: 13 }).map((_, i) => (
+            <div key={i} className="col-span-1 border-l border-border/40 last:border-r" />
+          ))}
+        </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
-              className="mt-8 font-serif text-6xl leading-[0.88] text-balance text-brand sm:text-7xl lg:text-[112px]"
-            >
-              <span className="italic">Insurance that</span>
-              <br />
-              feels <span className="text-brand-accent">effortless.</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
-              className="mt-10 max-w-md text-lg font-light leading-relaxed text-muted-foreground"
-            >
-              Check your eligibility for Medicare, ACA Health, Auto, Home, SSDI and Final Expense in under 60 seconds — fully anonymous.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
-              className="mt-10 flex flex-wrap items-center gap-7"
-            >
-              <Link
-                to="/quote"
-                className="group inline-flex items-center gap-3 rounded-full bg-brand px-9 py-5 text-base font-medium text-brand-foreground shadow-2xl shadow-brand/20 transition-transform hover:scale-[1.03] active:scale-95"
-              >
-                Start free comparison
-                <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <div className="flex items-center gap-4">
-                <div className="flex -space-x-3">
-                  {[0.2, 0.4, 0.6].map((o, i) => (
-                    <div key={i} className="size-12 rounded-full border-4 border-background" style={{ backgroundColor: `color-mix(in oklab, var(--brand-accent) ${o * 100}%, transparent)` }} />
-                  ))}
-                </div>
-                <div className="text-xs font-medium text-muted-foreground">
-                  <div className="mb-0.5 flex items-center gap-0.5">
-                    {[0,1,2,3,4].map((i) => <Star key={i} className="size-3.5 fill-brand-accent text-brand-accent" />)}
-                  </div>
-                  4.9/5 by 2M+ seniors
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
+        <div className="mx-auto max-w-7xl px-5 sm:px-6">
+          {/* meta row */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9, delay: 0.15 }}
-            className="relative col-span-12 mt-12 lg:col-span-5 lg:mt-0"
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+            className="flex items-center justify-between border-b border-border pb-6 text-[10px] font-bold uppercase tracking-[0.28em] text-muted-foreground"
           >
-            <div className="absolute -inset-6 -z-10 rounded-[40px] bg-gradient-to-br from-brand-accent/30 to-brand/30 blur-3xl" />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[3rem] shadow-2xl ring-1 ring-border">
-              <img
-                src={heroFamily}
-                alt="Family enjoying a moment together"
-                width={1280}
-                height={1600}
-                className="size-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand/40 via-transparent to-transparent" />
+            <span className="flex items-center gap-2 text-brand">
+              <span className="relative flex size-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-accent" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-brand-accent" />
+              </span>
+              Vol. 06 — 2026 Edition
+            </span>
+            <span className="hidden sm:inline">Independently licensed · All 50 states</span>
+            <span>The TrendyQuote Index</span>
+          </motion.div>
+
+          {/* main composition */}
+          <div className="relative grid grid-cols-12 gap-x-6 gap-y-10 pt-10 lg:pt-16">
+            {/* vertical rotated label */}
+            <div aria-hidden className="pointer-events-none absolute -left-4 top-32 hidden text-[10px] font-bold uppercase tracking-[0.5em] text-muted-foreground lg:block" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+              An editorial guide to American coverage
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: -16, rotate: 0 }} animate={{ opacity: 1, x: 0, rotate: -3 }} transition={{ duration: 0.7, delay: 0.6 }}
-              whileHover={{ rotate: 0 }}
-              className="absolute -bottom-10 -left-10 max-w-[260px] rounded-[2rem] border border-border bg-card p-7 shadow-2xl"
-            >
-              <span className="grid size-12 place-items-center rounded-2xl bg-brand-soft text-brand">
-                <Shield className="size-6" />
-              </span>
-              <div className="mt-4 font-serif text-3xl text-brand">$0/mo</div>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Many families qualify for $0 premium plans based on eligibility.</p>
-            </motion.div>
+            {/* Headline column */}
+            <div className="col-span-12 lg:col-span-7">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.05 }}
+                className="font-serif text-[64px] leading-[0.86] tracking-tight text-foreground sm:text-[88px] lg:text-[124px]"
+              >
+                Coverage,
+                <br />
+                <span className="italic text-brand">re&#8203;-imagined</span>
+                <span className="text-brand-accent">.</span>
+              </motion.h1>
 
-            <motion.div
-              initial={{ opacity: 0, x: 16, rotate: 0 }} animate={{ opacity: 1, x: 0, rotate: 6 }} transition={{ duration: 0.7, delay: 0.7 }}
-              whileHover={{ rotate: 0 }}
-              className="absolute -right-6 top-12 rounded-[2rem] bg-brand-accent px-7 py-5 text-brand shadow-xl"
-            >
-              <div className="font-serif text-3xl leading-none">2 min</div>
-              <div className="mt-1 text-[10px] font-bold uppercase tracking-widest opacity-80">avg. quote time</div>
-            </motion.div>
+              {/* indented intro with rule */}
+              <div className="mt-10 grid grid-cols-12 items-start gap-6">
+                <div className="col-span-2 hidden h-px translate-y-3 bg-foreground/40 sm:block" />
+                <motion.p
+                  initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+                  className="col-span-12 max-w-xl text-lg leading-relaxed text-muted-foreground sm:col-span-10"
+                >
+                  Six categories. One calm experience. Take a 60-second anonymous quiz and instantly see if you qualify for Medicare, ACA Health, Auto, Home, SSDI or Final Expense — no name, email or phone required.
+                </motion.p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
+                className="mt-10 flex flex-wrap items-center gap-5"
+              >
+                <Link
+                  to="/quote"
+                  className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-brand px-8 py-4 text-sm font-semibold text-brand-foreground shadow-xl shadow-brand/25 transition-transform hover:scale-[1.02] active:scale-95"
+                >
+                  <span className="relative z-10">Begin the 60-second quiz</span>
+                  <span className="relative z-10 grid size-7 place-items-center rounded-full bg-brand-foreground/10">
+                    <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
+                  </span>
+                </Link>
+                <a
+                  href="tel:+18664987441"
+                  className="group inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 hover:underline"
+                >
+                  or call a licensed agent <span className="font-serif italic text-brand">(866) 498-7441</span>
+                </a>
+              </motion.div>
+
+              {/* inline ratings strip */}
+              <motion.div
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.5 }}
+                className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-border pt-8"
+              >
+                <div>
+                  <div className="flex items-center gap-1">
+                    {[0,1,2,3,4].map((i) => <Star key={i} className="size-3.5 fill-brand-accent text-brand-accent" />)}
+                    <span className="ml-1.5 text-sm font-semibold">4.9</span>
+                  </div>
+                  <div className="mt-0.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">2M+ reviews</div>
+                </div>
+                <div className="h-10 w-px bg-border" />
+                <div>
+                  <div className="font-serif text-2xl text-brand">60 sec</div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">to find out</div>
+                </div>
+                <div className="h-10 w-px bg-border" />
+                <div>
+                  <div className="font-serif text-2xl text-brand">$0</div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">personal info</div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Image collage column */}
+            <div className="relative col-span-12 lg:col-span-5">
+              <div className="relative mx-auto aspect-[5/6] w-full max-w-md">
+                {/* primary tall */}
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute left-0 top-6 z-20 h-[78%] w-[72%] overflow-hidden rounded-[28px] shadow-2xl ring-1 ring-border"
+                >
+                  <img src={heroFamily} alt="A family covered with confidence" className="size-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-brand/30 via-transparent to-transparent" />
+                  <span className="absolute left-5 top-5 rounded-full bg-background/90 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-brand backdrop-blur">Issue 06 · Family</span>
+                </motion.div>
+
+                {/* secondary top-right */}
+                <motion.div
+                  initial={{ opacity: 0, y: -30, rotate: 0 }} animate={{ opacity: 1, y: 0, rotate: 5 }} transition={{ duration: 0.9, delay: 0.2 }}
+                  whileHover={{ rotate: 0 }}
+                  className="absolute right-0 top-0 z-30 h-40 w-44 overflow-hidden rounded-[20px] shadow-xl ring-1 ring-border sm:h-48 sm:w-52"
+                >
+                  <img src={imgMedicare} alt="Medicare" className="size-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand/40" />
+                </motion.div>
+
+                {/* tertiary bottom-right small */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30, rotate: 0 }} animate={{ opacity: 1, y: 0, rotate: -6 }} transition={{ duration: 0.9, delay: 0.35 }}
+                  whileHover={{ rotate: 0 }}
+                  className="absolute -bottom-2 right-2 z-30 h-36 w-36 overflow-hidden rounded-[20px] shadow-xl ring-1 ring-border"
+                >
+                  <img src={imgHome} alt="Home" className="size-full object-cover" />
+                </motion.div>
+
+                {/* badge $0 */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.5, type: "spring" }}
+                  className="absolute -left-4 bottom-8 z-40 grid size-28 place-items-center rounded-full bg-brand-accent text-brand shadow-xl ring-8 ring-background"
+                >
+                  <div className="text-center">
+                    <div className="font-serif text-3xl leading-none">$0</div>
+                    <div className="mt-1 text-[9px] font-bold uppercase tracking-widest opacity-80">premium plans</div>
+                  </div>
+                </motion.div>
+
+                {/* mini health chip */}
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.6 }}
+                  className="absolute -right-2 top-44 z-40 flex items-center gap-2 rounded-full bg-card px-3 py-2 shadow-lg ring-1 ring-border sm:top-52"
+                >
+                  <span className="size-8 overflow-hidden rounded-full">
+                    <img src={imgHealth} alt="" className="size-full object-cover" />
+                  </span>
+                  <div className="pr-2 text-[11px]">
+                    <div className="font-semibold">ACA approved</div>
+                    <div className="text-muted-foreground">Subsidies in 60s</div>
+                  </div>
+                </motion.div>
+
+                {/* decorative arc */}
+                <svg aria-hidden viewBox="0 0 200 200" className="absolute inset-0 z-10 size-full -rotate-12 text-brand/15">
+                  <circle cx="100" cy="100" r="98" fill="none" stroke="currentColor" strokeDasharray="3 6" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* category ticker */}
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9, delay: 0.7 }}
+            className="mt-20 overflow-hidden border-y border-border py-5"
+          >
+            <div className="flex items-center gap-12 whitespace-nowrap text-2xl text-muted-foreground sm:text-3xl">
+              {[...TICKER, ...TICKER, ...TICKER].map((t, i) => (
+                <span key={i} className="flex items-center gap-12">
+                  <span className="font-serif italic">{t}</span>
+                  <span className="text-brand-accent">✦</span>
+                </span>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>

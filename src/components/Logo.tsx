@@ -2,60 +2,53 @@ import { Link } from "@tanstack/react-router";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
-    <Link to="/" className={`group flex shrink-0 items-center gap-3 ${className}`}>
-      <span className="relative grid size-11 place-items-center">
-        {/* glow */}
+    <Link to="/" className={`group flex shrink-0 items-center gap-2.5 ${className}`}>
+      <span className="relative grid size-10 place-items-center">
         <span
           aria-hidden
-          className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-brand-accent/40 to-brand/40 blur-xl opacity-70 transition-opacity group-hover:opacity-100"
+          className="absolute inset-0 -z-10 rounded-[14px] bg-gradient-to-br from-brand-accent/50 to-brand/50 blur-xl opacity-60 transition-opacity duration-500 group-hover:opacity-100"
         />
         <svg
-          viewBox="0 0 48 48"
-          className="size-11 drop-shadow-md transition-transform duration-500 group-hover:rotate-[-6deg] group-hover:scale-105"
+          viewBox="0 0 40 40"
+          className="size-10 transition-transform duration-500 group-hover:scale-[1.06]"
           aria-hidden
         >
           <defs>
-            <linearGradient id="tq-logo-grad" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="tq-brand-grad" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="var(--brand)" />
-              <stop offset="60%" stopColor="var(--brand)" />
-              <stop offset="100%" stopColor="var(--brand-accent)" />
+              <stop offset="100%" stopColor="oklch(0.32 0.07 184)" />
             </linearGradient>
-            <linearGradient id="tq-logo-shine" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="white" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            <linearGradient id="tq-shine-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="white" stopOpacity="0.28" />
+              <stop offset="60%" stopColor="white" stopOpacity="0" />
             </linearGradient>
           </defs>
-          {/* squircle shield */}
+          {/* shield silhouette — protection */}
           <path
-            d="M24 3 C34 3 42 7 42 14 V26 C42 35 34 42 24 45 C14 42 6 35 6 26 V14 C6 7 14 3 24 3 Z"
-            fill="url(#tq-logo-grad)"
+            d="M20 2 L34 7 V20 C34 28.5 28 34.5 20 38 C12 34.5 6 28.5 6 20 V7 Z"
+            fill="url(#tq-brand-grad)"
           />
-          {/* gloss */}
           <path
-            d="M24 3 C30 3 36 4.5 39 7 L24 24 L9 7 C12 4.5 18 3 24 3 Z"
-            fill="url(#tq-logo-shine)"
+            d="M20 2 L34 7 V20 C34 28.5 28 34.5 20 38 C12 34.5 6 28.5 6 20 V7 Z"
+            fill="url(#tq-shine-grad)"
           />
-          {/* upward growth lines (quote / growth) */}
+          {/* monogram T inside shield — TrendyQuote */}
           <path
-            d="M13 30 L20 23 L25 28 L35 18"
+            d="M11.5 13 H28.5 M20 13 V28"
             stroke="white"
-            strokeWidth="2.8"
+            strokeWidth="2.6"
             strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
           />
-          <circle cx="35" cy="18" r="2.3" fill="var(--brand-accent)" stroke="white" strokeWidth="1.4" />
-          {/* sparkle accent */}
-          <circle cx="38" cy="9" r="1.4" fill="white" opacity="0.95" />
-          <circle cx="11" cy="38" r="1" fill="white" opacity="0.7" />
+          {/* accent dot above T crossbar */}
+          <circle cx="28.5" cy="13" r="2" fill="var(--brand-accent)" stroke="white" strokeWidth="0.8" />
         </svg>
       </span>
-      <span className="flex flex-col leading-none">
-        <span className="font-serif text-xl tracking-tight">
-          Trendy<span className="text-brand">Quote</span>
+      <span className="flex items-baseline gap-[3px]">
+        <span className="font-serif text-[22px] leading-none tracking-tight text-foreground">
+          Trendy
         </span>
-        <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-          Insurance · Simplified
+        <span className="font-serif text-[22px] leading-none tracking-tight text-brand">
+          Quote
         </span>
       </span>
     </Link>
