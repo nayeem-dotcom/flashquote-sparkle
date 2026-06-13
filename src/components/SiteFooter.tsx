@@ -12,11 +12,6 @@ export function SiteFooter() {
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Clarity and confidence in insurance comparison. Independently licensed in all 50 states. We never ask for personal information through our website.
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">
-              <span className="rounded-full border border-border px-3 py-1">BBB A+</span>
-              <span className="rounded-full border border-border px-3 py-1">256-bit SSL</span>
-              <span className="rounded-full border border-border px-3 py-1">HIPAA</span>
-            </div>
           </div>
 
           <div>
@@ -46,7 +41,7 @@ export function SiteFooter() {
           <div>
             <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Get in touch</div>
             <ul className="mt-4 space-y-2.5 text-sm text-foreground/80">
-              <li><a href="tel:+18005557868" className="hover:text-brand">1-800-555-QUOTE</a></li>
+              <li><a href="tel:+18664987441" className="hover:text-brand">(866) 498-7441</a></li>
               <li><a href="mailto:hello@trendyquote.com" className="hover:text-brand">hello@trendyquote.com</a></li>
               <li>Mon–Fri · 8am–8pm ET</li>
             </ul>

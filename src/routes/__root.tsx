@@ -75,7 +75,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "TrendyQuote — Insurance that feels effortless" },
-      { name: "description", content: "Compare affordable Medicare, Health, Auto, Life, Home and Final Expense insurance from top providers in minutes." },
+      { name: "description", content: "Check eligibility for Medicare, ACA Health, Auto, Home, SSDI and Final Expense coverage in under 60 seconds — anonymously." },
       { name: "author", content: "TrendyQuote" },
       { property: "og:site_name", content: "TrendyQuote" },
       { property: "og:type", content: "website" },

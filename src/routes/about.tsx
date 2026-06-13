@@ -54,7 +54,7 @@ function About() {
                 We started TrendyQuote because shopping for insurance felt like decoding a foreign language. Endless jargon, hidden fees, and pushy phone reps had become the norm.
               </p>
               <p>
-                Today, we partner with 40+ A-rated carriers across Medicare, Health, Auto, Life, Home and Final Expense — and pair every quote with a licensed human ready to answer questions, never to upsell.
+                Today, we cover Medicare, ACA Health, Auto, Home, SSDI and Final Expense — and pair every eligibility check with a real, licensed advisor or SSDI advocate ready to answer questions, never to upsell.
               </p>
               <p>
                 Whether you're entering retirement and need Medicare guidance, or purchasing your first home, we're here. No sales pressure. Just clarity.
