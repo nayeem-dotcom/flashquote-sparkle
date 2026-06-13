@@ -7,7 +7,7 @@ const SLOTS = ["medicare", "health", "auto", "home", "ssdi", "final-expense"] as
 
 export function CategoryGrid() {
   const bySlug = Object.fromEntries(categories.map((c) => [c.slug, c]));
-  const [medicare, aca, auto, home, ssdi, finalExp] = SLOTS.map((s) => bySlug[s]).filter(Boolean);
+  const [medicare, health, auto, home, ssdi, finalExp] = SLOTS.map((s) => bySlug[s]).filter(Boolean);
 
   return (
     <div className="grid grid-cols-12 gap-6">
@@ -47,7 +47,7 @@ export function CategoryGrid() {
       )}
 
       {/* ACA — vertical with image bottom */}
-      {aca && (
+      {health && (
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -57,16 +57,16 @@ export function CategoryGrid() {
         >
           <Link
             to="/$category"
-            params={{ category: aca.slug }}
+            params={{ category: health.slug }}
             className="group flex h-[420px] md:h-[560px] flex-col overflow-hidden rounded-[2.5rem] border border-border bg-card p-10 transition-colors hover:border-brand-accent"
           >
             <div className="grid size-14 place-items-center rounded-2xl bg-brand-soft text-brand">
-              <aca.Icon className="size-7" />
+              <health.Icon className="size-7" />
             </div>
-            <h3 className="mt-8 font-serif text-3xl text-brand md:text-4xl">{aca.name}</h3>
-            <p className="mt-4 font-light leading-relaxed text-muted-foreground">{aca.tagline}</p>
+            <h3 className="mt-8 font-serif text-3xl text-brand md:text-4xl">{health.name}</h3>
+            <p className="mt-4 font-light leading-relaxed text-muted-foreground">{health.tagline}</p>
             <div className="relative mt-auto h-48 overflow-hidden rounded-2xl grayscale transition-all duration-700 group-hover:grayscale-0">
-              <img src={aca.image} alt={aca.name} loading="lazy" className="size-full object-cover" />
+              <img src={health.image} alt={health.name} loading="lazy" className="size-full object-cover" />
             </div>
           </Link>
         </motion.div>
