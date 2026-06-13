@@ -11,8 +11,8 @@ export function Logo({ className = "" }: { className?: string }) {
         >
           <defs>
             <linearGradient id="tq-logo-grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="hsl(var(--brand))" />
-              <stop offset="100%" stopColor="hsl(var(--brand-accent))" />
+              <stop offset="0%" stopColor="var(--brand)" />
+              <stop offset="100%" stopColor="var(--brand-accent)" />
             </linearGradient>
           </defs>
           {/* shield */}
