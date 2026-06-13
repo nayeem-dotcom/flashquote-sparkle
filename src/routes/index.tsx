@@ -196,20 +196,20 @@ function Home() {
             <div className="relative overflow-hidden rounded-[32px] bg-brand p-10 text-brand-foreground shadow-2xl shadow-brand/20 sm:p-14">
               <div aria-hidden className="absolute -right-20 -top-20 size-72 rounded-full bg-brand-accent/30 blur-3xl animate-blob" />
               <div aria-hidden className="absolute -left-20 -bottom-20 size-72 rounded-full bg-brand-accent/20 blur-3xl animate-blob" style={{ animationDelay: "5s" }} />
-              <h2 className="relative font-serif text-4xl leading-tight sm:text-5xl">Where should we start your quote?</h2>
+              <h2 className="relative font-serif text-4xl leading-tight sm:text-5xl">Take a 60-second eligibility quiz.</h2>
               <p className="relative mt-4 max-w-[55ch] text-brand-foreground/80">
-                Enter your ZIP and pick a coverage type. We'll handle the rest — securely, in under two minutes.
+                Pick a coverage type and we'll show you if you qualify — anonymously. No name, email or phone required.
               </p>
               <Link
                 to="/quote"
                 className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-brand-foreground px-7 py-4 text-base font-semibold text-brand transition-transform hover:scale-[1.02] active:scale-95"
               >
-                Start my quote
+                Start the quiz
                 <ArrowRight className="size-4" />
               </Link>
               <div className="relative mt-6 flex items-center gap-2 text-sm text-brand-foreground/70">
                 <span className="size-2 rounded-full bg-emerald-400" />
-                Secure 256-bit SSL connection
+                100% anonymous · No personal info
               </div>
             </div>
           </Reveal>
