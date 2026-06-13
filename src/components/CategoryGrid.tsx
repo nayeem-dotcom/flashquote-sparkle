@@ -5,7 +5,7 @@ import { categories } from "@/lib/categories";
 
 export function CategoryGrid() {
   return (
-    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {categories.map((c, i) => (
         <motion.div
           key={c.slug}
@@ -17,21 +17,30 @@ export function CategoryGrid() {
           <Link
             to="/$category"
             params={{ category: c.slug }}
-            className="group relative block overflow-hidden rounded-3xl bg-card p-7 ring-1 ring-border transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand/10 hover:ring-brand/30"
+            className="group relative block overflow-hidden rounded-3xl ring-1 ring-border transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand/15 hover:ring-brand/40"
           >
-            <div className="mb-6 flex size-12 items-center justify-center rounded-2xl bg-brand-soft text-brand transition-colors group-hover:bg-brand group-hover:text-brand-foreground">
-              <c.Icon className="size-5" />
+            <div className="relative h-52 overflow-hidden">
+              <img
+                src={c.image}
+                alt={c.name}
+                width={1280}
+                height={960}
+                loading="lazy"
+                className="size-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/75 via-foreground/15 to-transparent" />
+              <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-brand backdrop-blur">
+                <c.Icon className="size-3.5" /> {c.short}
+              </div>
+              <div className="absolute bottom-4 left-4 right-4 font-serif text-2xl text-white">{c.name}</div>
             </div>
-            <h3 className="font-serif text-2xl leading-tight">{c.name}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.tagline}</p>
-            <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand">
-              {c.cta}
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-            </span>
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -bottom-12 -right-12 size-40 rounded-full bg-brand/5 blur-2xl transition-all duration-500 group-hover:scale-150 group-hover:bg-brand-accent/20"
-            />
+            <div className="bg-card p-6">
+              <p className="text-sm leading-relaxed text-muted-foreground">{c.tagline}</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand">
+                {c.cta}
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+              </span>
+            </div>
           </Link>
         </motion.div>
       ))}
