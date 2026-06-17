@@ -4,6 +4,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, CheckCircle2, Lock, ShieldCheck, Sparkles } from "lucide-react";
 import { z } from "zod";
 
+const SERVICES = [
+  "Medicare",
+  "ACA Health",
+  "Auto Insurance",
+  "Homeowners Insurance",
+  "SSDI Benefits",
+  "Final Expense",
+  "Not sure — help me choose",
+];
+
 const schema = z.object({
   firstName: z.string().trim().min(1, "First name is required").max(60),
   lastName: z.string().trim().min(1, "Last name is required").max(60),
@@ -22,6 +32,7 @@ type Props = {
   title?: string;
   eyebrow?: string;
   subtitle?: string;
+  showService?: boolean;
 };
 
 export function LeadForm({
@@ -30,13 +41,14 @@ export function LeadForm({
   title = "Get your free quote",
   eyebrow = "No obligation · Free comparison",
   subtitle = "Fill in your details and a licensed advisor will reach out with personalized options.",
+  showService = false,
 }: Props) {
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "" });
+  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", service: "" });
   const [agreed, setAgreed] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
 
-  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm((s) => ({ ...s, [k]: e.target.value }));
 
   const onSubmit = (e: FormEvent) => {
@@ -47,6 +59,10 @@ export function LeadForm({
       return;
     }
     const parsed = schema.safeParse(form);
+    if (showService && !form.service) {
+      setErrors((x) => ({ ...x, service: "Please choose a coverage type." }));
+      return;
+    }
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
@@ -153,6 +169,23 @@ export function LeadForm({
                   className={inputCls(errors.phone)}
                 />
               </Field>
+              {showService && (
+                <div className="sm:col-span-2">
+                  <Field label="Which coverage are you interested in?" error={errors.service}>
+                    <select
+                      value={form.service}
+                      onChange={set("service")}
+                      className={inputCls(errors.service) + " appearance-none bg-[length:16px_16px] bg-[right_1rem_center] bg-no-repeat pr-10"}
+                      style={{ backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>\")" }}
+                    >
+                      <option value="">Select a coverage…</option>
+                      {SERVICES.map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </Field>
+                </div>
+              )}
             </div>
 
             <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-2xl border border-border bg-background/60 p-4 transition-colors hover:border-brand/40">
@@ -163,7 +196,7 @@ export function LeadForm({
                 className="mt-1 size-5 shrink-0 cursor-pointer rounded border-border text-brand focus:ring-brand"
               />
               <span className="text-[12px] leading-relaxed text-muted-foreground">
-                By clicking <strong className="text-foreground">"Submit,"</strong> I acknowledge and consent to being contacted via messaging, voice calls, and/or email by <strong className="text-foreground">Home Trendy Quote</strong> and its marketing partners regarding the inquiry I have submitted through this form. I understand that my contact information will be used solely for the purpose of responding to my inquiry and will be handled in accordance with Home Trendy Quote's <Link to="/privacy" className="font-semibold text-brand underline underline-offset-2">privacy policy</Link>, Partner and <Link to="/terms" className="font-semibold text-brand underline underline-offset-2">terms &amp; conditions</Link>. I also confirm that I am the authorized user of the contact information provided and give my express written consent to receive communications, including autodialed and prerecorded messages, even if my number is registered on a state or federal Do Not Call (DNC) list. I understand that my consent is not a condition of purchase, and I may opt out at any time.
+                By clicking <strong className="text-foreground">"Submit,"</strong> I acknowledge and consent to being contacted via messaging, voice calls, and/or email by <strong className="text-foreground">Insurance Trendy Quote</strong> and its marketing partners regarding the inquiry I have submitted through this form. I understand that my contact information will be used solely for the purpose of responding to my inquiry and will be handled in accordance with Home Trendy Quote's <Link to="/privacy" className="font-semibold text-brand underline underline-offset-2">privacy policy</Link>, Partner and <Link to="/terms" className="font-semibold text-brand underline underline-offset-2">terms &amp; conditions</Link>. I also confirm that I am the authorized user of the contact information provided and give my express written consent to receive communications, including autodialed and prerecorded messages, even if my number is registered on a state or federal Do Not Call (DNC) list. I understand that my consent is not a condition of purchase, and I may opt out at any time.
               </span>
             </label>
             {errors.agreed && (

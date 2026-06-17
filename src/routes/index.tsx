@@ -26,9 +26,9 @@ export const Route = createFileRoute("/")({
 
 const stats = [
   { value: "2M+", label: "Families covered" },
-  { value: "50", label: "States licensed" },
   { value: "4.9/5", label: "Client rating" },
   { value: "98%", label: "Renewal rate" },
+  { value: "60s", label: "Average quote" },
 ];
 
 const TICKER = ["Medicare", "ACA Health", "Auto", "Home", "SSDI", "Final Expense"];
@@ -63,9 +63,9 @@ function Home() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-accent" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-brand-accent" />
               </span>
-              Vol. 06 — 2026 Edition
+              Now accepting quotes
             </span>
-            <span className="hidden sm:inline">Independently licensed · All 50 states</span>
+            <span className="hidden sm:inline">Independent · Free comparison</span>
             <span>The TrendyQuote Index</span>
           </motion.div>
 
@@ -150,7 +150,7 @@ function Home() {
                 >
                   <img src={heroFamily} alt="A family covered with confidence" className="size-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-brand/30 via-transparent to-transparent" />
-                  <span className="absolute left-5 top-5 rounded-full bg-background/90 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-brand backdrop-blur">Issue 06 · Family</span>
+                  <span className="absolute left-5 top-5 rounded-full bg-background/90 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-brand backdrop-blur">Covered · Family</span>
                 </motion.div>
 
                 {/* secondary top-right */}
@@ -246,7 +246,7 @@ function Home() {
                 </h2>
               </div>
               <p className="max-w-xs border-l border-border pl-6 text-sm italic leading-relaxed text-muted-foreground">
-                Independently licensed in all 50 states. Six dedicated categories — one calm experience.
+                Six dedicated categories — one calm, independent experience.
               </p>
             </div>
           </Reveal>
@@ -299,13 +299,13 @@ function Home() {
               Share your details and a licensed advisor will reach out with personalized coverage options across Medicare, ACA Health, Auto, Home, SSDI, and Final Expense.
             </p>
             <ul className="mt-6 space-y-2 text-sm text-foreground/80">
-              <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-brand" /> Independent and licensed in all 50 states</li>
+              <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-brand" /> Independent comparison from top carriers</li>
               <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-brand" /> No cost, no obligation</li>
               <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-brand" /> Secure — your data stays protected</li>
             </ul>
           </Reveal>
           <Reveal delay={0.1}>
-            <LeadForm />
+            <LeadForm showService />
           </Reveal>
         </div>
       </section>

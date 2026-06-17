@@ -46,7 +46,7 @@ function QuotePicker() {
             </motion.p>
 
             <div className="mt-7 flex flex-wrap items-center gap-5 text-xs font-semibold text-muted-foreground">
-              <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-brand" /> Licensed in 50 states</span>
+              <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-brand" /> Independent & secure</span>
               <span className="inline-flex items-center gap-2"><Clock className="size-4 text-brand" /> Under a minute</span>
               <span className="inline-flex items-center gap-2"><Lock className="size-4 text-brand" /> Secure</span>
             </div>

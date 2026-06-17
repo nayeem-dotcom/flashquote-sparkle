@@ -85,7 +85,7 @@ function CategoryPage() {
               </motion.div>
 
               <p className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
-                <ShieldCheck className="size-3.5 text-brand" /> 100% free comparison · Licensed in all 50 states
+                <ShieldCheck className="size-3.5 text-brand" /> 100% free comparison · No obligation
               </p>
             </div>
 
