@@ -169,6 +169,23 @@ export function LeadForm({
                   className={inputCls(errors.phone)}
                 />
               </Field>
+              {showService && (
+                <div className="sm:col-span-2">
+                  <Field label="Which coverage are you interested in?" error={errors.service}>
+                    <select
+                      value={form.service}
+                      onChange={set("service")}
+                      className={inputCls(errors.service) + " appearance-none bg-[length:16px_16px] bg-[right_1rem_center] bg-no-repeat pr-10"}
+                      style={{ backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>\")" }}
+                    >
+                      <option value="">Select a coverage…</option>
+                      {SERVICES.map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </Field>
+                </div>
+              )}
             </div>
 
             <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-2xl border border-border bg-background/60 p-4 transition-colors hover:border-brand/40">

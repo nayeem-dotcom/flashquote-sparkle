@@ -10,7 +10,7 @@ export function SiteFooter() {
           <div>
             <Logo />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Clarity and confidence in insurance comparison. Independently licensed in all 50 states. We never ask for personal information through our website.
+              Clarity and confidence in insurance comparison. We never ask for personal information through our website without your consent.
             </p>
           </div>
 
