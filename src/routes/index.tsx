@@ -95,7 +95,7 @@ function Home() {
                   initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
                   className="col-span-12 max-w-xl text-lg leading-relaxed text-muted-foreground sm:col-span-10"
                 >
-                  Six categories. One calm experience. Take a 60-second anonymous quiz and instantly see if you qualify for Medicare, ACA Health, Auto, Home, SSDI or Final Expense — no name, email or phone required.
+                  Six categories. One calm experience. Share a few details and a licensed advisor will reach out with personalized options for Medicare, ACA Health, Auto, Home, SSDI or Final Expense — free and with no obligation.
                 </motion.p>
               </div>
 

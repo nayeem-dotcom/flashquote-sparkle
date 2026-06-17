@@ -17,7 +17,6 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as CategoryRouteImport } from './routes/$category'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as QuizCategoryRouteImport } from './routes/quiz.$category'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -59,11 +58,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const QuizCategoryRoute = QuizCategoryRouteImport.update({
-  id: '/quiz/$category',
-  path: '/quiz/$category',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,7 +68,6 @@ export interface FileRoutesByFullPath {
   '/quote': typeof QuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/quiz/$category': typeof QuizCategoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,7 +78,6 @@ export interface FileRoutesByTo {
   '/quote': typeof QuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/quiz/$category': typeof QuizCategoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,7 +89,6 @@ export interface FileRoutesById {
   '/quote': typeof QuoteRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/quiz/$category': typeof QuizCategoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,7 +101,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/sitemap.xml'
     | '/terms'
-    | '/quiz/$category'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -121,7 +111,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/sitemap.xml'
     | '/terms'
-    | '/quiz/$category'
   id:
     | '__root__'
     | '/'
@@ -132,7 +121,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/sitemap.xml'
     | '/terms'
-    | '/quiz/$category'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -144,7 +132,6 @@ export interface RootRouteChildren {
   QuoteRoute: typeof QuoteRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
-  QuizCategoryRoute: typeof QuizCategoryRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -205,13 +192,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/quiz/$category': {
-      id: '/quiz/$category'
-      path: '/quiz/$category'
-      fullPath: '/quiz/$category'
-      preLoaderRoute: typeof QuizCategoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -224,7 +204,6 @@ const rootRouteChildren: RootRouteChildren = {
   QuoteRoute: QuoteRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
-  QuizCategoryRoute: QuizCategoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
