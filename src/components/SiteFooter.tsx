@@ -32,7 +32,7 @@ export function SiteFooter() {
             <ul className="mt-4 space-y-2.5">
               <li><Link to="/about" className="text-sm text-foreground/80 hover:text-brand">About</Link></li>
               <li><Link to="/contact" className="text-sm text-foreground/80 hover:text-brand">Contact</Link></li>
-              <li><Link to="/quote" className="text-sm text-foreground/80 hover:text-brand">Start Quiz</Link></li>
+              <li><Link to="/quote" className="text-sm text-foreground/80 hover:text-brand">Get Free Quote</Link></li>
               <li><Link to="/privacy" className="text-sm text-foreground/80 hover:text-brand">Privacy Policy</Link></li>
               <li><Link to="/terms" className="text-sm text-foreground/80 hover:text-brand">Terms & Conditions</Link></li>
             </ul>

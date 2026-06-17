@@ -1,8 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, ShieldCheck } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { categories, categoryBySlug } from "@/lib/categories";
 import { Reveal } from "@/components/Reveal";
+import { LeadForm } from "@/components/LeadForm";
 
 export const Route = createFileRoute("/$category")({
   beforeLoad: ({ params }) => {
@@ -35,14 +36,18 @@ function CategoryPage() {
 
   return (
     <>
-      {/* Hero with image */}
+      {/* Hero with form */}
       <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20">
         <div className="animate-gradient-slow absolute inset-0 -z-10 bg-gradient-to-br from-brand-soft via-background to-background" />
+        <div aria-hidden className="pointer-events-none absolute -right-20 top-20 -z-10 size-[480px] rounded-full bg-brand-accent/20 blur-[120px] animate-blob" />
+        <div aria-hidden className="pointer-events-none absolute -left-20 top-60 -z-10 size-[420px] rounded-full bg-brand/15 blur-[120px] animate-blob" style={{ animationDelay: "4s" }} />
+
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <Link to="/" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-brand">
             ← All coverage
           </Link>
-          <div className="mt-6 grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+
+          <div className="mt-6 grid items-start gap-12 lg:grid-cols-[1.05fr_1fr]">
             <div>
               <motion.div
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
@@ -55,7 +60,7 @@ function CategoryPage() {
               </motion.div>
               <motion.h1
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-                className="mt-6 font-serif text-5xl leading-[1.05] text-balance sm:text-6xl"
+                className="mt-6 font-serif text-5xl leading-[1.02] text-balance sm:text-7xl"
               >
                 {c.name.split(" ")[0]}{" "}
                 <span className="italic text-brand">{c.name.split(" ").slice(1).join(" ") || "coverage"}</span>
@@ -66,44 +71,35 @@ function CategoryPage() {
               >
                 {c.blurb}
               </motion.p>
-              <motion.div
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
-                className="mt-8 flex flex-wrap gap-3"
-              >
-                <Link
-                  to="/quiz/$category"
-                  params={{ category: c.slug }}
-                  className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3.5 text-sm font-medium text-brand-foreground hover:scale-[1.02] transition-transform"
-                >
-                  {c.cta} <ArrowRight className="size-4" />
-                </Link>
-                <Link to="/contact" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-medium hover:bg-brand-soft">
-                  Talk to an advisor
-                </Link>
-              </motion.div>
-              <p className="mt-5 inline-flex items-center gap-2 text-xs text-muted-foreground">
-                <ShieldCheck className="size-3.5 text-brand" /> Under 60 seconds · No personal info required
-              </p>
-            </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.15 }}
-              className="relative"
-            >
-              <div className="absolute -inset-4 -z-10 rounded-[36px] bg-gradient-to-br from-brand-accent/30 to-brand/30 blur-2xl" />
-              <div className="relative overflow-hidden rounded-[32px] ring-1 ring-border shadow-2xl shadow-brand/10">
-                <img
-                  src={c.image}
-                  alt={c.name}
-                  width={1280}
-                  height={960}
-                  className="aspect-[4/5] w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand/60 via-transparent to-transparent" />
+              {/* Hero image collage */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.25 }}
+                className="relative mt-10 overflow-hidden rounded-[28px] ring-1 ring-border shadow-2xl shadow-brand/10"
+              >
+                <img src={c.image} alt={c.name} width={1280} height={720} className="aspect-[16/10] w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand/70 via-transparent to-transparent" />
                 <div className="absolute bottom-0 p-6 text-brand-foreground">
                   <div className="font-serif text-3xl leading-tight">{c.tagline}</div>
                 </div>
-              </div>
+              </motion.div>
+
+              <p className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
+                <ShieldCheck className="size-3.5 text-brand" /> 100% free comparison · Licensed in all 50 states
+              </p>
+            </div>
+
+            {/* Form */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+              className="lg:sticky lg:top-24"
+            >
+              <LeadForm
+                category={c.short}
+                title={`Get your free ${c.short} quote`}
+                eyebrow={`${c.short} · No obligation`}
+                subtitle={`Fill in your details and a licensed advisor will reach out about ${c.programName}.`}
+              />
             </motion.div>
           </div>
         </div>
@@ -119,7 +115,7 @@ function CategoryPage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {c.benefits.map((b, i) => (
               <Reveal key={b.title} delay={i * 0.08}>
-                <div className="h-full rounded-3xl bg-card p-7 ring-1 ring-border">
+                <div className="h-full rounded-3xl bg-card p-7 ring-1 ring-border transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-brand/10">
                   <span className="grid size-10 place-items-center rounded-2xl bg-brand-soft text-brand">
                     <Check className="size-5" />
                   </span>
@@ -132,30 +128,8 @@ function CategoryPage() {
         </div>
       </section>
 
-      {/* Quiz CTA strip */}
-      <section className="bg-surface py-20">
-        <div className="mx-auto max-w-5xl px-5 sm:px-6">
-          <Reveal>
-            <div className="relative overflow-hidden rounded-[32px] bg-brand p-10 text-brand-foreground sm:p-14">
-              <div aria-hidden className="absolute -right-20 -top-20 size-72 rounded-full bg-brand-accent/30 blur-3xl animate-blob" />
-              <h2 className="relative font-serif text-4xl leading-tight">See if you qualify for {c.short}.</h2>
-              <p className="relative mt-3 max-w-[55ch] text-brand-foreground/80">
-                {c.quiz.length} quick questions. Fully anonymous — no name, email or phone required.
-              </p>
-              <Link
-                to="/quiz/$category"
-                params={{ category: c.slug }}
-                className="relative mt-7 inline-flex items-center gap-2 rounded-full bg-brand-foreground px-6 py-4 text-base font-semibold text-brand transition-transform hover:scale-[1.02]"
-              >
-                Start the quiz <ArrowRight className="size-4" />
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* FAQ */}
-      <section className="py-20">
+      <section className="bg-surface py-20">
         <div className="mx-auto max-w-4xl px-5 sm:px-6">
           <Reveal className="mb-10">
             <span className="text-xs font-semibold uppercase tracking-widest text-brand">Questions</span>
@@ -174,6 +148,20 @@ function CategoryPage() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Second form CTA */}
+      <section className="py-20">
+        <div className="mx-auto max-w-3xl px-5 sm:px-6">
+          <Reveal>
+            <LeadForm
+              category={c.short}
+              title={`Ready to compare ${c.short} options?`}
+              eyebrow="Free · Takes under a minute"
+              subtitle="Send your details and a licensed advisor will follow up with tailored plans."
+            />
+          </Reveal>
         </div>
       </section>
 

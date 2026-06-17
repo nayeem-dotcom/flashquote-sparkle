@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock, ShieldCheck, ArrowRight } from "lucide-react";
+import { Mail, Phone, Clock, ShieldCheck } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
-import { categories } from "@/lib/categories";
+import { LeadForm } from "@/components/LeadForm";
+
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -44,11 +45,10 @@ function Contact() {
 
       <section className="pb-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-3">
             {[
               { I: Phone, t: "Call us", v: "(866) 498-7441", s: "Mon–Fri · 8am–8pm ET", href: "tel:+18664987441" },
               { I: Mail, t: "Email", v: "hello@trendyquote.com", s: "We reply within 1 hour", href: "mailto:hello@trendyquote.com" },
-              { I: MapPin, t: "Headquarters", v: "Charleston, SC", s: "Licensed in all 50 states" },
               { I: Clock, t: "Hours", v: "Mon – Fri", s: "8am–8pm Eastern Time" },
             ].map((c) => {
               const Inner = (
@@ -80,33 +80,24 @@ function Contact() {
       </section>
 
       <section className="bg-surface py-20">
-        <div className="mx-auto max-w-7xl px-5 sm:px-6">
-          <Reveal className="mb-10 max-w-2xl">
-            <span className="text-xs font-semibold uppercase tracking-widest text-brand">Or start anonymously</span>
-            <h2 className="mt-3 font-serif text-4xl leading-tight">Take a 60-second eligibility quiz.</h2>
-            <p className="mt-3 text-muted-foreground">No name, email or phone required. Just see if you qualify.</p>
+        <div className="mx-auto grid max-w-6xl items-start gap-12 px-5 sm:px-6 lg:grid-cols-[1fr_1.1fr]">
+          <Reveal className="max-w-xl">
+            <span className="text-xs font-semibold uppercase tracking-widest text-brand">Send a message</span>
+            <h2 className="mt-3 font-serif text-4xl leading-tight sm:text-5xl">Prefer to write?</h2>
+            <p className="mt-4 text-muted-foreground">
+              Share your details below and a licensed advisor will follow up. We respond to every inquiry within one business hour.
+            </p>
           </Reveal>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((c) => (
-              <Link
-                key={c.slug}
-                to="/quiz/$category"
-                params={{ category: c.slug }}
-                className="group flex items-center gap-4 rounded-2xl bg-card p-4 ring-1 ring-border hover:border-brand/40 hover:ring-brand/40"
-              >
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-soft text-brand group-hover:bg-brand group-hover:text-brand-foreground">
-                  <c.Icon className="size-5" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="font-serif text-lg">{c.short}</div>
-                  <div className="truncate text-xs text-muted-foreground">{c.tagline}</div>
-                </div>
-                <ArrowRight className="size-4 text-muted-foreground group-hover:text-brand group-hover:translate-x-1 transition-all" />
-              </Link>
-            ))}
-          </div>
+          <Reveal delay={0.1}>
+            <LeadForm
+              title="Send us a note"
+              eyebrow="We reply within 1 hour"
+              subtitle="A licensed advisor will get back to you shortly."
+            />
+          </Reveal>
         </div>
       </section>
+
     </>
   );
 }

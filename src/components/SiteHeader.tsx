@@ -78,8 +78,9 @@ export function SiteHeader() {
             to="/quote"
             className="hidden rounded-full bg-brand px-5 py-2 text-sm font-medium text-brand-foreground ring-1 ring-brand transition-transform hover:scale-[1.03] active:scale-95 sm:inline-flex"
           >
-            Start Quiz
+            Get Free Quote
           </Link>
+
           <button
             className="grid size-10 place-items-center rounded-full border border-border md:hidden"
             onClick={() => setOpen((v) => !v)}
@@ -128,8 +129,9 @@ export function SiteHeader() {
                 onClick={() => setOpen(false)}
                 className="mt-3 block rounded-full bg-brand px-5 py-3 text-center text-sm font-medium text-brand-foreground"
               >
-                Start Quiz
+                Get Free Quote
               </Link>
+
             </div>
           </motion.div>
         )}

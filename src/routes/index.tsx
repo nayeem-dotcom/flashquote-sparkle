@@ -1,12 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, Clock, Users, Star, ArrowUpRight } from "lucide-react";
+import { Shield, Clock, Users, Star, ArrowUpRight } from "lucide-react";
 import heroFamily from "@/assets/hero-family.jpg";
 import imgMedicare from "@/assets/cat-medicare.jpg";
 import imgHealth from "@/assets/cat-health.jpg";
 import imgHome from "@/assets/cat-home.jpg";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { Reveal } from "@/components/Reveal";
+import { LeadForm } from "@/components/LeadForm";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -101,22 +103,17 @@ function Home() {
                 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
                 className="mt-10 flex flex-wrap items-center gap-5"
               >
-                <Link
-                  to="/quote"
+                <a
+                  href="#lead-form"
                   className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-brand px-8 py-4 text-sm font-semibold text-brand-foreground shadow-xl shadow-brand/25 transition-transform hover:scale-[1.02] active:scale-95"
                 >
-                  <span className="relative z-10">Begin the 60-second quiz</span>
+                  <span className="relative z-10">Get my free quote</span>
                   <span className="relative z-10 grid size-7 place-items-center rounded-full bg-brand-foreground/10">
                     <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
                   </span>
-                </Link>
-                <a
-                  href="tel:+18664987441"
-                  className="group inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 hover:underline"
-                >
-                  or call a licensed agent <span className="font-serif italic text-brand">(866) 498-7441</span>
                 </a>
               </motion.div>
+
 
               {/* inline ratings strip */}
               <motion.div
@@ -266,9 +263,10 @@ function Home() {
           </Reveal>
           <div className="grid gap-6 md:grid-cols-3">
             {[
-              { n: "01", t: "Take a quick quiz", d: "Pick your coverage and answer a few yes/no questions — fully anonymous.", I: Users },
-              { n: "02", t: "Compare side-by-side", d: "We pull live quotes from top-rated carriers and show your best fits.", I: Clock },
-              { n: "03", t: "Enroll with a human", d: "A licensed advisor walks you through enrollment — only if you'd like.", I: Shield },
+              { n: "01", t: "Share your details", d: "Fill in the short form — first name, last name, email and phone. That's it.", I: Users },
+              { n: "02", t: "We compare plans", d: "We pull live quotes from top-rated carriers and curate your best fits.", I: Clock },
+              { n: "03", t: "Talk to a human", d: "A licensed advisor reaches out to walk you through enrollment — only if you'd like.", I: Shield },
+
             ].map((s, i) => (
               <Reveal key={s.n} delay={i * 0.08}>
                 <div className="rounded-3xl bg-card p-8 ring-1 ring-border">
@@ -287,32 +285,31 @@ function Home() {
         </div>
       </section>
 
-      {/* Quote CTA */}
-      <section className="py-24">
-        <div className="mx-auto max-w-4xl px-5 sm:px-6">
+      {/* Lead Form CTA */}
+      <section className="relative overflow-hidden py-24">
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-br from-brand-soft/60 via-background to-background" />
+        <div aria-hidden className="pointer-events-none absolute -right-40 top-20 -z-10 size-[520px] rounded-full bg-brand-accent/15 blur-[140px] animate-blob" />
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-6 lg:grid-cols-[1fr_1.1fr]">
           <Reveal>
-            <div className="relative overflow-hidden rounded-[32px] bg-brand p-10 text-brand-foreground shadow-2xl shadow-brand/20 sm:p-14">
-              <div aria-hidden className="absolute -right-20 -top-20 size-72 rounded-full bg-brand-accent/30 blur-3xl animate-blob" />
-              <div aria-hidden className="absolute -left-20 -bottom-20 size-72 rounded-full bg-brand-accent/20 blur-3xl animate-blob" style={{ animationDelay: "5s" }} />
-              <h2 className="relative font-serif text-4xl leading-tight sm:text-5xl">Take a 60-second eligibility quiz.</h2>
-              <p className="relative mt-4 max-w-[55ch] text-brand-foreground/80">
-                Pick a coverage type and we'll show you if you qualify — anonymously. No name, email or phone required.
-              </p>
-              <Link
-                to="/quote"
-                className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-brand-foreground px-7 py-4 text-base font-semibold text-brand transition-transform hover:scale-[1.02] active:scale-95"
-              >
-                Start the quiz
-                <ArrowRight className="size-4" />
-              </Link>
-              <div className="relative mt-6 flex items-center gap-2 text-sm text-brand-foreground/70">
-                <span className="size-2 rounded-full bg-emerald-400" />
-                100% anonymous · No personal info
-              </div>
-            </div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-brand">Free quote · 1 minute</span>
+            <h2 className="mt-3 font-serif text-5xl leading-[1.05] sm:text-6xl">
+              Tell us a little — <span className="italic text-brand">we'll handle the rest.</span>
+            </h2>
+            <p className="mt-5 max-w-md text-lg text-muted-foreground">
+              Share your details and a licensed advisor will reach out with personalized coverage options across Medicare, ACA Health, Auto, Home, SSDI, and Final Expense.
+            </p>
+            <ul className="mt-6 space-y-2 text-sm text-foreground/80">
+              <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-brand" /> Independent and licensed in all 50 states</li>
+              <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-brand" /> No cost, no obligation</li>
+              <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-brand" /> Secure — your data stays protected</li>
+            </ul>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <LeadForm />
           </Reveal>
         </div>
       </section>
+
 
     </>
   );
